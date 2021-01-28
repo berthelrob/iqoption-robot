@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<!-- Required meta tags -->
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<!-- Bootstrap CSS -->
+		<link rel="stylesheet" href="../static/vendor/bootstrap/css/bootstrap.min.css">
+		<link href="../static/vendor/fonts/circular-std/style.css" rel="stylesheet">
+		<link rel="stylesheet" href="../static/css/style.css">
+		<link rel="stylesheet" href="../static/vendor/fonts/fontawesome/css/fontawesome-all.css">
+		<title>Dashboard</title>
+		<style>
+			body{
+				user-select: none;
+			}
+
+            ::-webkit-scrollbar{
+				width: 6px !important;
+				height: 6px !important;
+			}
+
+			::-webkit-scrollbar-thumb{
+				background-color: rgb(222 6 6 / 99%)
+			}
+
+			::-webkit-scrollbar-track{
+				background: hsla(0,0%,100%,.1)
+			}
+
+		</style>
+	</head>
+	<body style="">
+        <div class="dashboard-main-wrapper">
+
+
+            <div class="dashboard-header">
+                <nav class="navbar navbar-expand-lg bg-white fixed-top fluid-container">
+                    
+                    <a class="navbar-brand" href="/"><img src="../static/images/logo-122.png" style="width: 45px"> Wolve<b>Bot</b></a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse " id="navbarSupportedContent">
+                        <ul class="navbar-nav ml-auto navbar-right-top">
+                            <li class="nav-item">
+                                <button class="btn btn-primary" onclick="getLog()"><li class="fas fa-arrow-down"></li> Baixar Logs</button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="btn btn-primary" onclick="openClose()"><li class="fas fa-terminal"></li> Visualizar Logs</button>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+
+            <div class="nav-left-sidebar sidebar-dark">
+                <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;"><div class="menu-list" style="overflow: hidden; width: auto; height: 100%;">
+                    <nav class="navbar navbar-expand-lg navbar-light">
+                        <a class="d-xl-none d-lg-none" href="#">Dashboard</a>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarNav">
+                            <ul class="navbar-nav flex-column">
+                                <li class="nav-divider">
+                                    Menu
+                                </li>
+                                <li class="nav-item ">
+                                    <a class="nav-link active" href="#"><i class="fas fa-home"></i> Dashboard</a>
+                                </li>
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="/importar/"><i class="fas fa-upload"></i> Importar Lista</a>
+                                </li>
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="/configurar/"><i class="fas fa-wrench"></i> Configurações</a>
+                                </li>
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="/logout"><i class="fas fa-wrench"></i> Sair</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div><div class="slimScrollBar" style="background: rgb(0, 0, 0); width: 7px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 212.635px;"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div></div>
+            </div>
+
+
+
+
+            <div class="dashboard-wrapper" style="overflow: auto ;">
+                <div class="container-fluid">
+                    <div class="row" style="overflow-y: auto;">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="page-header section-block" id="top">
+                                <h2 class="pageheader-title">Dashboard</h2>
+                                <p class="pageheader-text"></p>
+                            </div>
+                        </div>
+
+                        <div class="section-block container-fluid" style="display: inline-flex">
+                            <h4 class="fluid-container" style="margin-right: 20px;">EMAIL: {{ email }}</h4> <h4 class="fluid-container" style="margin-right: 20px;">TIPO CONTA: {{ tipo_conta }} <h4>  <h4 style="margin-right: 20px;">VALOR ENTRADA: $ {{ valor }}</h4>  <h4 style="margin-right: 20px;">OPERAÇÂO: {{ op.upper() }}</h4>  <h4 style="margin-right: 20px;">PAYOUT: {{payout}}%</h4>
+                        </div>
+
+                        {% if not licenca: %}
+                        <div class="container-fluid">
+                            <div class="alert bg-danger text-white" role="alert">
+                                <i class="fas fa-info-circle"></i>  Nenhuma licença válida foi encontrada, apenas operações de testes sera permitida, adquira uma licença via <a href="mailto:wolvetraders@gmail.com">wolvetraders@gmail.com</a> ou Telegram: <a href="https://t.me/wolvebot_suporte">@wolvebot_suporte</a> - Instagram: <a href="https://instagram.com/wolvetrader/">@wolvetrader</a>
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        {% if config_status == "N": %}
+                        <div class="container-fluid">
+                            <div class="alert bg-danger text-white" role="alert">
+                                <i class="fas fa-info-circle"></i>  Configurações necessária, entre na Aba "Configurações".
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        <div class="col-sm-12 col-12">
+                            <div class="row">
+                                <div class="col-xl-3 col-12">
+                                    <div class="card" style="height: 155px;">
+                                        <div class="card-body">
+                                            <h5 class="text-muted">SALDO TOTAL</h5>
+                                            <div class="metric-value d-inline-block">
+                                                <h1 class="mb-4" id="saldo_inicial">0</h1>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-12">
+                                    <div class="card" style="height: 155px;">
+                                        <div class="card-body">
+                                            <h5 class="text-muted">LUCRO ATUAL</h5>
+                                            <div class="metric-value d-inline-block">
+                                                <h1 class="mb-4" id="saldo_atual">0</h1>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-2 col-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="text-muted">ORDENS EXECUTADAS</h5>
+                                            <div class="metric-value d-inline-block">
+                                                <h1 class="mb-4" id="executadas">0</h1>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-2 col-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="text-muted">ORDENS DESCARTADAS</h5>
+                                            <div class="metric-value d-inline-block">
+                                                <h1 class="mb-4" id="descartadas">0</h1>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-2 col-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="text-muted">ORDENS PENDENTES</h5>
+                                            <div class="metric-value d-inline-block">
+                                                <h1 class="mb-4" id="pendentes">0</h1>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    Placar
+                                </div>
+                                <div class="card-body text-center" style="display: inline-flex; align-items: center; justify-content: center;">
+                                    <div class="col-xl-3 col-12 col-md-5">
+                                        <div class="card" style="height: 155px;">
+                                            <div class="card-body">
+                                                <h5 class="text-success" style="font-weight: bold; font-size: x-large;">WIN</h5>
+                                                <div class="metric-value d-inline-block">
+                                                    <h1 class="mb-4" style="" id="win">0</h1>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% if status != 1: %}
+                                            <button class="btn btn-success" id="play">INICIAR</button>
+                                        {% else: %}
+                                            <button class="btn btn-success" id="play" disabled>INICIAR</button>
+                                        {% endif %}
+                                    </div>
+                                    <h2>X</h2>
+                                    <div class="col-xl-3 col-12 col-md-5">
+                                        <div class="card" style="height: 155px;">
+                                            <div class="card-body">
+                                                <h5 class="text-danger" style="font-weight: bold; font-size: x-large;">LOSS</h5>
+                                                <div class="metric-value d-inline-block">
+                                                    <h1 class="mb-4" id="loss">0</h1>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% if status != 0: %}
+                                            <button class="btn btn-danger" id="pause">PAUSAR</button>
+                                        {% else: %}
+                                            <button class="btn btn-danger" id="pause" disabled>PAUSAR</button>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-12">
+                            <div class="card" style="height: 500px">
+                                <div class="card-header">
+                                    Calendario Economico
+                                </div>
+                                <div class="card-body"> 
+                                    <iframe src="https://sslecal2.forexprostools.com?columns=exc_flags,exc_currency,exc_importance,exc_actual,exc_forecast,exc_previous&features=datepicker,timezone&countries=110,17,29,25,32,6,37,36,26,5,22,39,14,48,10,35,7,43,38,4,12,72&calType=day&timeZone=12&lang=12" width="100%" height="100%" frameborder="0" allowtransparency="true" marginwidth="0" marginheight="0"></iframe><div class="poweredBy" style="font-family: Arial, Helvetica, sans-serif;"><span style="font-size: 11px;color: #333333;text-decoration: none;">Calendário Econômico fornecido por <a href="https://br.investing.com/" rel="nofollow" target="_blank" style="font-size: 11px;color: #06529D; font-weight: bold;" class="underline_link">Investing.com Brasil</a>.</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="position:fixed;bottom: 1px; right: -500px; background: black; height: 90%;width: 280px; border-radius: 10px 10px 0px 0px; transition-duration: 1s" id='logsData'>
+			<div class="text-white" style='height: 100%; overflow-x: auto; padding: 10px 10px 70px 10px' id="logs_page">Atualizando...</div>
+		</div>
+
+        <script src="../static/vendor/jquery/jquery-3.3.1.min.js"></script>
+		<script src="../static/vendor/bootstrap/js/bootstrap.bundle.js"></script>
+        <script>
+
+            var state = {}
+			state.status = false
+
+			function openClose(){
+			
+				elmnt = document.getElementById('logsData')
+				
+				if(state.status){
+                    elmnt.style.right = '-500px'
+					//elmnt.style.height = '0px'
+					state.status = false
+				}else{
+                    elmnt.style.right = '1px'
+					//elmnt.style.height = '500px'
+					state.status = true
+				}
+			
+            }
+
+            function getLog() {
+
+                data = "aa"
+
+                 $.ajax({
+                    url:'/getlogs/', 
+                    method:'POST', 
+                    data: {log:data},
+                    success:(resp)=>{
+                    
+                       alert('Logs foram baixados na pasta [Documentos].')
+                    
+                    }
+                
+                })
+
+            };
+
+
+            
+
+            $("#play").click(function(){
+                
+                $.ajax({
+                    url:'/play/', 
+                    method:'POST', 
+                    data:{
+                        sloss: $('#sloss').val(),
+                        max_gale: $('#max_gale').val(),
+                        fgale: $('#fgale').val(),
+                        valor: $('#valor').val(),
+                        tempo: $('#tempo').val(),
+                        tprofit: $('#tprofit').val(),
+                        tipo_conta: $('#switch19').val(),
+                        delay: $('#delay').val()
+                    },
+                    success:(resp)=>{
+                    
+                        $('#play').attr('disabled', true)
+                        $('#pause').attr('disabled', false)
+                    
+                    }
+                })
+            
+            });
+            
+            $("#pause").click(function(){
+            
+                $.ajax({
+                    url:'/pause/', 
+                    method:'POST', 
+                    data:{},
+                    success:(resp)=>{
+                    
+                        $('#pause').attr('disabled', true)
+                        $('#play').attr('disabled', false)
+                    
+                    }
+                })
+            
+            });
+
+            function estatisticas(){
+
+                $.ajax({
+                    url:'/statistics/', 
+                    method:'GET',
+                    success:(resp)=>{
+                    
+                        $('#saldo_inicial').text("$ " + resp.saldo_inicial)
+                        $('#win').text(resp.win)
+                        $('#loss').text(resp.loss)
+                        $('#saldo_atual').text(resp.saldo_atual)
+                        $('#executadas').text(resp.executadas)
+                        $('#pendentes').text(resp.pendentes)
+                        $('#descartadas').text(resp.descartadas)
+                    
+                    }
+                })
+
+            }
+
+            function logs(){
+                $.ajax({
+					url:'/logs/', 
+					method:'GET',
+					success: function(resp){
+						//$('#win').text(resp.win)
+						//$('#loss').text(resp.loss)
+						$("#logs_page").html(resp.logs)
+					
+					}
+				})
+            }
+            estatisticas()
+            logs()
+
+            setInterval(logs, 5000);
+            setInterval(estatisticas, 5000)
+    </script>
+
+    </body>
+</html>

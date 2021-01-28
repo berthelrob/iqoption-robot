@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<!-- Required meta tags -->
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<!-- Bootstrap CSS -->
+		<link rel="stylesheet" href="../static/vendor/bootstrap/css/bootstrap.min.css">
+		<link href="../static/vendor/fonts/circular-std/style.css" rel="stylesheet">
+		<link rel="stylesheet" href="../static/css/style.css">
+		<link rel="stylesheet" href="../static/vendor/fonts/fontawesome/css/fontawesome-all.css">
+		<title>Dashboard</title>
+		<style>
+			body{
+				user-select: none
+			}
+		</style>
+	</head>
+	<body>
+        <div class="dashboard-main-wrapper">
+
+
+            <div class="dashboard-header">
+                <nav class="navbar navbar-expand-lg bg-white fixed-top">
+                    <a class="navbar-brand" href="/"><img src="{{ url_for('static', filename='images/logo-122.png')}}" style="width: 45px"> Wolve<b>Bot</b></a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse " id="navbarSupportedContent">
+                <!--         <ul class="navbar-nav ml-auto navbar-right-top">
+                            <li class="nav-item">
+                                <button class="btn btn-primary"><li class="fas fa-arrow-down"></li> Baixar Logs</button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="btn btn-primary"><li class="fas fa-terminal"></li> Visualizar Logs</button>
+                            </li>
+                        </ul>
+ -->                    </div>
+                </nav>
+            </div>
+
+            <div class="nav-left-sidebar sidebar-dark">
+                <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;"><div class="menu-list" style="overflow: hidden; width: auto; height: 100%;">
+                    <nav class="navbar navbar-expand-lg navbar-light">
+                        <a class="d-xl-none d-lg-none" href="#">Importar Lista</a>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarNav">
+                            <ul class="navbar-nav flex-column">
+                                <li class="nav-divider">
+                                    Menu
+                                </li>
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="/"><i class="fas fa-home"></i> Dashboard</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="#"><i class="fas fa-upload"></i> Importar Lista</a>
+                                </li>
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="/configurar/"><i class="fas fa-wrench"></i> Configurações</a>
+                                </li>
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="/logout"><i class="fa fa-sign-out" aria-hidden="true"></i> Sair</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div><div class="slimScrollBar" style="background: rgb(0, 0, 0); width: 7px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 212.635px;"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div></div>
+            </div>
+
+
+
+
+            <div class="dashboard-wrapper">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="page-header section-block" id="top">
+                                <h2 class="pageheader-title">Importar Sinais</h2>
+                                <p class="pageheader-text"></p>
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="alert alert-dismissible fade text-white" style="display: none" id='modalAlert' role="alert">
+                                        <strong id='msg_title'>Oops!</strong> <p id='msg_text'>Erro Futuro aqui.</p>
+                                        <a href="#" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </a>
+                                    </div>
+                                    <textarea class="form-control" rows="10" placeholder="Exemplo: 20/10/2020, 22:00, USDCHF, CALL, 5M" id="sinais"></textarea>
+                                    <div class="custom-file mb-3">
+                                        <input type="file" class="custom-file-input" id="customFile" accept="text/plain" onchange="readFile(event)" id="File">
+                                        <label class="custom-file-label" style="background-color: cornflowerblue; color: white" for="customFile" id="customFileLabel">Selecionar arquivo</label>
+                                    </div>
+                                    <button class="btn btn-primary" style="width: 100%" id="sendSinais">Importar</button>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class='col-lg-12 col-sm-12'>
+					
+                            <div class="card" >
+                                <h5 class="card-header">Sua Lista</h5>
+                                <div class="card-body" style="overflow-x: scroll;height: 400px;">
+                                    <table class="table">
+                                        <thead>
+                                            <tr style="display:sticky">
+                                                <th scope="col">ID</th>
+                                                <th scope="col">Data</th>
+                                                <th scope="col">Hora</th>
+                                                <th scope="col">Ativo</th>
+                                                <th scope="col">Ação</th>
+                                                <th scope="col">Tempo</th>
+                                                <th scope="col">Opção</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="s">
+                                            {% for sinal in sinais: %}
+                                                <tr>
+                                                    <th scope="row">{{ sinal[1] }}</th>
+                                                    <td>{{ sinal[0].split(',')[0] }}</td>
+                                                    <td>{{ sinal[0].split(',')[1] }}</td>
+                                                    <td>{{ sinal[0].split(',')[2] }}</td>
+                                                    <td>{{ sinal[0].split(',')[3] }}</td>
+                                                    <td>{{ sinal[0].split(',')[4] }}</td>
+                                                    <td>
+                                                   
+                                                        <button class='btn btn-danger' onclick="remove( {{ sinal[1] }} )" id='{{sinal[1]}}-trash'><i class='fa fa-trash-alt'></i></button>
+                                                    
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+         <div style="position:fixed;bottom: 1px; right: -500px; background: black; height: 90%;width: 280px; border-radius: 10px 10px 0px 0px; transition-duration: 1s" id='logsData'>
+            <div class="text-white" style='height: 100%; overflow-x: auto; padding: 10px 10px 70px 10px' id="logs_page">Atualizando...</div>
+        </div>
+
+        
+        <script src="{{ url_for('static', filename='vendor/jquery/jquery-3.3.1.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.js') }}"></script>
+        
+
+        <script>
+
+            var state = {}
+            state.status = false
+
+            function openClose(){
+            
+                elmnt = document.getElementById('logsData')
+                
+                if(state.status){
+                    elmnt.style.right = '-500px'
+                    //elmnt.style.height = '0px'
+                    state.status = false
+                }else{
+                    elmnt.style.right = '1px'
+                    //elmnt.style.height = '500px'
+                    state.status = true
+                }
+            
+            }
+            
+                function logs(){
+                $.ajax({
+                    url:'/logs/', 
+                    method:'GET',
+                    success: function(resp){
+                        //$('#win').text(resp.win)
+                        //$('#loss').text(resp.loss)
+                        $("#logs_page").html(resp.logs)
+                    
+                    }
+                })
+            }
+            
+            logs()
+
+                $('#sendSinais').click(function(){
+                    $.ajax({
+                        url:'/add/', 
+                        method:'POST', 
+                        data:{
+                            sinais: $('#sinais').val()
+                        },
+                        success:(t)=>{
+                            update_sinais()
+
+                            var a = t
+                            
+                            if(a.error){
+                                $('#msg_title').text('Oops!')
+                                $('#msg_text').text(a.msg)
+                                $('#modalAlert').addClass('bg-danger');
+                                $('#modalAlert').addClass('show');
+                                $('#modalAlert').show()
+                                
+                            }else{
+                                $('#msg_title').text('Sucesso :)')
+                                $('#msg_text').text(a.msg)
+                                $('#modalAlert').addClass('bg-success');
+                                $('#modalAlert').addClass('show');
+                            
+                            }
+                        
+                        }
+                    })
+                });
+
+                function update_sinais(){
+                    $.ajax({
+                        url:'/sinais/',
+                        method:'GET',
+                        success:(t)=>{$("#s").html(t)}})
+                }
+
+
+                function remove(id){
+			
+                    $.ajax({
+                        url:'/remove/', 
+                        method:'POST', 
+                        data:{
+                            sinal_id: id,
+                        },
+                        success:(t)=>{
+
+                            var a = t
+                            $('#'+id+'-trash').attr('disabled', true)
+                            
+                            if(a.error){
+                                $('#modalAlert').addClass('bg-danger');
+                                $('#modalAlert').addClass('show');
+                                $('#modalAlert').show()
+                                
+                            }else{
+                            
+                                $('#modalAlert').addClass('bg-success');
+                                $('#modalAlert').addClass('show');
+                            
+                            }
+
+                            update_sinais()
+                        
+                        }
+                    })
+                
+                }
+
+                function readFile(event){
+			
+                    var input = event.target;
+                    $('#customFileLabel').html('Arquivo: ' + input.files[0].name)
+
+                    var reader = new FileReader();
+                    reader.onload = function(){
+                    var dataURL = reader.result;
+                    var output = document.getElementById('sinais');
+                    output.value = dataURL;
+                    //alert(dataURL)
+                    };
+                    reader.readAsText(input.files[0]);
+                
+                }
+        </script>
+
+    </body>
+</html>

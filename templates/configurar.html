@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<!-- Required meta tags -->
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<!-- Bootstrap CSS -->
+		<link rel="stylesheet" href="../static/vendor/bootstrap/css/bootstrap.min.css">
+		<link href="../static/vendor/fonts/circular-std/style.css" rel="stylesheet">
+		<link rel="stylesheet" href="../static/css/style.css">
+		<link rel="stylesheet" href="../static/vendor/fonts/fontawesome/css/fontawesome-all.css">
+		<title>Dashboard</title>
+		<style>
+			body{
+				user-select: none
+			}
+		</style>
+	</head>
+	<body onload="dataconfig()">
+        <div class="dashboard-main-wrapper">
+
+
+            <div class="dashboard-header">
+                <nav class="navbar navbar-expand-lg bg-white fixed-top">
+                    <a class="navbar-brand" href="/"> <img src="../static/images/logo-122.png" style="width: 45px"> Wolve<b>Bot</b></a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                <!--     <div class="collapse navbar-collapse " id="navbarSupportedContent">
+                      
+                    </div> -->
+                </nav>
+            </div>
+
+            <div class="nav-left-sidebar sidebar-dark">
+                <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;"><div class="menu-list" style="overflow: hidden; width: auto; height: 100%;">
+                    <nav class="navbar navbar-expand-lg navbar-light">
+                        <a class="d-xl-none d-lg-none" href="#">Dashboards</a>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarNav">
+                            <ul class="navbar-nav flex-column">
+                                <li class="nav-divider">
+                                    Menu
+                                </li>
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="/"><i class="fas fa-home"></i> Dashboard</a>
+                                </li>
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="/importar"><i class="fas fa-upload"></i> Importar Lista</a>
+                                </li>
+                                <li class="nav-item ">
+                                    <a class="nav-link active" href="#"><i class="fas fa-wrench"></i> Configurações</a>
+                                </li>
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="/logout"><i class="fas fa-wrench"></i> Sair</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div><div class="slimScrollBar" style="background: rgb(0, 0, 0); width: 7px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 212.635px;"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div></div>
+            </div>
+
+
+            <div class="dashboard-wrapper">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="page-header section-block" id="top">
+                                <h2 class="pageheader-title">Configurar</h2>
+                                <p class="pageheader-text"></p>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-12">
+                            <div class="card" style="height: 368px;">
+                                <div class="card-body">
+                                    <h5 class="text-muted">Conta</h5>
+                 
+                                    <div class="">
+
+
+                                        Conta de Operação
+                                        <select class="form-control" required id="tipo_conta">
+                                            {% if tipo_conta == "T": %}
+                                                <option value="R">Real</option>
+                                                <option value="T" selected>Treinamento</option>
+                                            {% else: %}
+                                                <option value="R" selected >Real</option>
+                                                <option value="T">Treinamento</option>
+                                            {% endif %}
+                                          
+                                        </select>
+                                        <br />
+                                        Tipo de Operação
+                                        <select class="form-control" id="tipo_op">
+                                            {% if tipo_ob == "digital": %}
+                                                <option value="digital" selected>Digital</option>
+                                                <option value="binary">Binario</option>
+                                                <option value="auto">Automático</option>
+                                            {% elif tipo_ob  == "binary": %}
+                                                <option value="digital" >Digital</option>
+                                                <option value="binary" selected >Binario</option>
+                                                <option value="auto">Automático</option>
+                                            {% else %}
+                                                <option value="digital" >Digital</option>
+                                                <option value="binary">Binario</option>
+                                                <option value="auto" selected >Automático</option>
+                                            {% endif %}
+                                        </select>
+                                        <br />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-12">
+                            <div class="card" style="height: 368px;">
+                                <div class="card-body">
+                                    <h5 class="text-muted">Estrátegia de Gerenciamento</h5>
+                                    <div>
+
+                                        <select class="form-control" id="gerenciamento">
+                                            {% if gerenciamento == "": %}
+                                                <option value="" selected>Nenhum</option>
+                                                <option value="soros">SorosGale</option>
+                                                <option value="martingale">MartinGale</option>
+                                            {% elif gerenciamento  == "soros": %}
+                                                 <option value="" >Nenhum</option>
+                                                <option value="soros" selected >SorosGale</option>
+                                                <option value="martingale">MartinGale</option>
+                                            {% else %}
+                                                <option value="" >Nenhum</option>
+                                                <option value="soros">SorosGale</option>
+                                                <option value="martingale" selected>MartinGale</option>
+                                            {% endif %}
+                                           
+                                        </select>
+                                        <br />
+                                        <div id="soros" style="display: none;">
+                                            <select class="form-control" id="perfil_soros">
+                                            {% if perfil_soros == "": %}
+                                                <option value="" selected disabled>Perfil</option>
+                                                <option value="conservador">Conservador</option>
+                                                <option value="moderado">Moderado</option>
+                                                <option value="agressivo">Agressivo</option>
+                                            {% elif perfil_soros  == "conservador": %}
+                                                <option value=""  >Perfil</option>
+                                                <option value="conservador" selected disabled >Conservador</option>
+                                                <option value="moderado">Moderado</option>
+                                                <option value="agressivo">Agressivo</option>
+                                            {% elif perfil_soros == "moderado" : %}
+                                                <option value="" >Perfil</option>
+                                                <option value="conservador">Conservador</option>
+                                                <option value="moderado" selected disabled >Moderado</option>
+                                                <option value="agressivo">Agressivo</option>
+                                            {% else %}
+                                               <option value="" selected disabled>Perfil</option>
+                                                <option value="conservador">Conservador</option>
+                                                <option value="moderado">Moderado</option>
+                                                <option value="agressivo" selected disabled >Agressivo</option>
+                                            {% endif %}
+                                              
+                                            </select>
+                                            <br />
+                                            Niveis de Soros
+                                            <select class="form-control" id="nivel_soros">
+                                                {% if nivel_soros == "1": %} 
+                                                <option value="1" selected>1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                                <option value="9">9</option>
+                                                <option value="10">10</option>
+                                                <option value="11">11</option>
+                                                <option value="12">12</option>  
+
+                                                {% elif nivel_soros  == "2": %}
+                                                  <option value="1">1</option>
+                                                <option value="2" selected>2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                                <option value="9">9</option>
+                                                <option value="10">10</option>
+                                                <option value="11">11</option>
+                                                <option value="12">12</option>
+                                                {% elif nivel_soros  == "3": %}
+                                                  <option value="1" >1</option>
+                                                <option value="2" >2</option>
+                                                <option value="3" selected>3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                                <option value="9">9</option>
+                                                <option value="10">10</option>
+                                                <option value="11">11</option>
+                                                <option value="12">12</option>
+                                                {% elif nivel_soros  == "4": %}
+                                                  <option value="1" >1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4" selected>4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                                <option value="9">9</option>
+                                                <option value="10">10</option>
+                                                <option value="11">11</option>
+                                                <option value="12">12</option>
+                                                {% elif nivel_soros  == "5": %}
+                                                  <option value="1" >1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5" selected>5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                                <option value="9">9</option>
+                                                <option value="10">10</option>
+                                                <option value="11">11</option>
+                                                <option value="12">12</option>
+                                                {% elif nivel_soros  == "6": %}
+                                                 <option value="1" >1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5" >5</option>
+                                                <option value="6" selected>6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                                <option value="9">9</option>
+                                                <option value="10">10</option>
+                                                <option value="11">11</option>
+                                                <option value="12">12</option>
+
+                                                {% elif nivel_soros  == "7": %}
+                                                 <option value="1" >1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5" >5</option>
+                                                <option value="6">6</option>
+                                                <option value="7" selected>7</option>
+                                                <option value="8">8</option>
+                                                <option value="9">9</option>
+                                                <option value="10">10</option>
+                                                <option value="11">11</option>
+                                                <option value="12">12</option>
+                                                {% elif nivel_soros  == "8": %}
+                                                 <option value="1" >1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5" >5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8" selected>8</option>
+                                                <option value="9">9</option>
+                                                <option value="10">10</option>
+                                                <option value="11">11</option>
+                                                <option value="12">12</option>
+                                                {% elif nivel_soros  == "9": %}
+                                                 <option value="1" >1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5" >5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                                <option value="9" selected>9</option>
+                                                <option value="10">10</option>
+                                                <option value="11">11</option>
+                                                <option value="12">12</option>
+                                                {% elif nivel_soros  == "10": %}    
+                                                 <option value="1" >1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5" >5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                                <option value="9">9</option>
+                                                <option value="10" selected>10</option>
+                                                <option value="11">11</option>
+                                                <option value="12">12</option>  
+                                                {% elif nivel_soros  == "11": %}    
+                                                 <option value="1" >1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5" >5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                                <option value="9">9</option>
+                                                <option value="10" >10</option>
+                                                <option value="11" selected>11</option>
+                                                <option value="12">12</option>                                     
+                                                
+                                                {% else %}
+                                                 <option value="1" >1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                                <option value="9">9</option>
+                                                <option value="10">10</option>
+                                                <option value="11">11</option>
+                                                <option value="12" selected>12</option>
+
+                                                {% endif %}
+                                               
+                                            </select>
+                                        </div>
+
+                                        <div id="martin" style="display: none;">
+                                            Fator MarginGale
+                                            <input type="number" class="form-control"  id="fgale">
+                                            Maximo MartinGale
+                                            <input type="number" class="form-control"  id="mgale">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-12">
+                            <div class="card" style="height: 368px;">
+                                <div class="card-body">
+                                    <h5 class="text-muted">Filtro</h5>
+                                    <div>
+                                        <select class="form-control" id="filtro">
+                                            <option value="" selected>Nenhum</option>
+                                            <option value="sma" disabled>SMA (em analise)</option>
+                                        </select>
+                                        <br />
+                                        <div id="sma" style="display: none;">
+                                            Periodo:
+                                            <input type="number" value="10" class="form-control" id="periodo">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-12">
+                            <div class="card" style="height: 368px;">
+                                <div class="card-body">
+                                    <h5 class="text-muted">Banca - Entradas</h5>
+                                    <div>
+                                        Valor:
+                                        <input type="number" class="form-control"  id="valor">
+                                        <br />
+                                        Delay:
+                                        <input type="number" class="form-control"  id="delay">
+                                        <br />
+                                        Juros Compostos:
+                                        <select class="form-control" id="juros_comp">
+                                            <option value="S" selected>Ativo (padrão)</option>
+                                            <option value="N">Desativado</option>
+                                        </select>
+                                        <br />
+                                        Payout:
+                                        <input type="number" class="form-control" id="payout">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-12">
+                            <div class="card" style="height: 368px;">
+                                <div class="card-body">
+                                    <h5 class="text-muted">Banca - Gerenciamento</h5>
+                                    <div class="metric-value d-inline-block">
+                                        <br />
+                                        Stop Loss
+                                        <input type="number" class="form-control"  id="stop_loss">
+                                        <br />
+                                        Stop Gain
+                                        <input type="number" class="form-control"  id="stop_win">
+                                        <br />
+                                        Stop-Gain/Loss Percentual
+                                        <select id="percentual_loss_win" class="form-control">
+
+
+                                            {% if juros_compostos == "S": %}
+                                            <option value="S" selected >Ativo</option>
+                                            <option value="N" >Desativado (padrão)</option>
+                                            {% else %}
+                                            <option value="S">Ativo</option>
+                                            <option value="N" selected>Desativado (padrão)</option>
+
+                                            {% endif %}
+                                            
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-12 col-12">
+                            <div class="card" style="">
+                                <div class="card-header">
+                                    GERENCIAR ROBÔ PELO TELEGRAM
+                                </div>
+                                <div class="card-body">
+                                    <input type="password" class="form-control" placeholder="Telegram Token" value="{{token}}" id="t_token">
+                                </div>
+                                <div class="card-footer"> 
+                                    <button class="btn btn-primary" id="t_salve">Salvar</button>
+                                    <button class="btn btn-success" id="t_start">Iniciar</button>
+                                    <a class="btn btn-primary" href="https://t.me/BotFather" target="_blank">Gerar token</a>
+                                    Token de Autenticação: {{ auth_token }} <b class="text-danger">Este código nunca deve ser comapartilhado</b>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="section-block" id="top">
+                                <button class="btn btn-primary" id="salvar">Salvar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="position:fixed;bottom: 1px; right: -500px; background: black; height: 90%;width: 280px; border-radius: 10px 10px 0px 0px; transition-duration: 1s" id='logsData'>
+            <div class="text-white" style='height: 100%; overflow-x: auto; padding: 10px 10px 70px 10px' id="logs_page">Atualizando...</div>
+        </div>
+
+        <script src="../static/vendor/jquery/jquery-3.3.1.min.js"></script>
+        <script src="../static/vendor/bootstrap/js/bootstrap.bundle.js"></script>
+        
+        <script>
+
+              var state = {}
+            state.status = false
+
+            function openClose(){
+            
+                elmnt = document.getElementById('logsData')
+                
+                if(state.status){
+                    elmnt.style.right = '-500px'
+                    //elmnt.style.height = '0px'
+                    state.status = false
+                }else{
+                    elmnt.style.right = '1px'
+                    //elmnt.style.height = '500px'
+                    state.status = true
+                }
+            
+            }
+
+                function logs(){
+                $.ajax({
+                    url:'/logs/', 
+                    method:'GET',
+                    success: function(resp){
+                        //$('#win').text(resp.win)
+                        //$('#loss').text(resp.loss)
+                        $("#logs_page").html(resp.logs)
+                    
+                    }
+                })
+            }
+            
+            logs()
+            $("#gerenciamento").change((v)=>{
+                let txt = $("#gerenciamento").val()
+
+                if( txt == "soros" ){
+                    $("#soros").show("slow")
+                    $("#martin").hide()
+
+                }else if(txt == "martingale"){
+                    $("#martin").show("slow")
+                    $("#soros").hide()
+
+                }else{
+                    $("#martin").hide()
+                    $("#soros").hide()
+                }
+            })
+
+            $("#filtro").change((v)=>{
+                let txt = $("#filtro").val()
+
+                if( txt == "sma" ){
+                    $("#sma").show("slow")
+                }else{
+                    $("#sma").hide()
+                }
+            })
+            
+            $("#salvar").click(()=>{
+                
+                $.ajax({
+                        url:'/salvar/', 
+                        method:'POST', 
+                        data:{
+
+                            tipo_conta: $("#tipo_conta").val(),
+                            tipo_op: $("#tipo_op").val(),
+                            gerenciamento: $("#gerenciamento").val(),
+                            perfil_soros: $("#perfil_soros").val(),
+                            nivel_soros: $("#nivel_soros").val(),
+                            fator_gale : $("#fgale").val(),
+                            max_gale: $("#mgale").val(),
+                            filtro: $("#filtro").val(),
+                            periodo: $("#periodo").val(),
+                            valor: $("#valor").val(),
+                            delay: $("#delay").val(),
+                            juros_comp: $("#juros_comp").val(),
+                            stop_win: $("#stop_win").val(),
+                            stop_loss: $("#stop_loss").val(),
+                            payout: $("#payout").val(),
+                            percentual_loss_win: $("#percentual_loss_win").val(),
+                            
+                            
+                        },
+                        success:(resp)=>{
+                        
+                            alert("Salvo")
+                        
+                        },
+                        error: function(e) {
+                         alert("Salvo")
+                        }
+                })
+
+            })
+
+            $('#t_salve').click(()=>{
+                $.ajax({
+                    url: "/telegram_save/",
+                    method: "POST",
+                    data: {
+                        t_token: $("#t_token").val()
+                    },
+                    success: (resp)=>{
+                        alert(resp.msg)
+                    }
+                });
+            })
+
+            $('#t_start').click(()=>{
+                $.ajax({
+                    url: "/telegram_start/",
+                    method: "GET",
+                    success: (resp)=>{
+                    
+                        alert(resp.msg)
+                    
+                    }
+                });
+            })
+
+
+            d
+
+
+            function dataconfig() {
+                 $.ajax({
+                    url:'/dataconfig/', 
+                    method:'GET',
+                    success:(resp)=>{                        
+
+                        $('#stop_win').val(resp.stopwin)
+                        $('#stop_loss').val(resp.stoploss)
+                        $('#payout').val(resp.payout)
+                        $('#valor').val(resp.valor)
+                        $('#delay').val(resp.delay_)
+                        $('#tipo_conta').val(resp.tipo_conta)
+                        $('#tipo_op').val(resp.tipo_op)
+                        $('#perfil_soros').val(resp.perfil_soros)
+                        $('#nivel_soros').val(resp.nivel_soros)
+                        $('#periodo').val(resp.periodo)
+                        $('#juros_comp').val(resp.juros_comp)
+                        $('#gerenciamento').val(resp.gerenciamento)
+                        $('#fgale').val(resp.fator_gale)
+                        $('#mgale').val(resp.max_gale)
+                        $('#filtro').val(resp.filtro)
+                        $('#t_token').val(resp.t_token)
+                        $('#t_ativo').val(resp.t_ativo)
+                        $('#t_id').val(resp.t_id)
+                        $('#t_token_access').val(resp.t_token_access)
+                        $('#configurado').val(resp.configurado)
+
+
+
+      
+
+                   
+                   
+                    }
+                })
+
+            }
+
+
+            dataconfig()
+
+        
+
+
+
+         
+        </script>
+
+    </body>
+</html>
